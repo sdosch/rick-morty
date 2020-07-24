@@ -1,7 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
-import { ThemeProvider } from "@material-ui/core";
-import { createMuiTheme } from "@material-ui/core/styles";
+import { Grommet } from "grommet";
 
 import { ReactQueryDevtools } from "react-query-devtools";
 
@@ -11,33 +10,23 @@ import Layout from "./Layout";
 export default function App() {
   return (
     <Router>
-      <ThemeProvider theme={theme}>
+      <Grommet theme={theme}>
         <Layout />
         <ReactQueryDevtools initialIsOpen />
-      </ThemeProvider>
+      </Grommet>
     </Router>
   );
 }
 
-const theme = createMuiTheme({
-  typography: {
-    h1: {
-      fontFamily: "Roboto Mono, monospace",
+const theme = {
+  global: {
+    colors: {
+      brand: "#228BE6",
     },
-    h2: {
-      fontFamily: "Roboto Mono, monospace",
-    },
-    h3: {
-      fontFamily: "Roboto Mono, monospace",
-    },
-    h4: {
-      fontFamily: "Roboto Mono, monospace",
-    },
-    h5: {
-      fontFamily: "Roboto Mono, monospace",
-    },
-    h6: {
-      fontFamily: "Roboto Mono, monospace",
+    font: {
+      family: "Roboto",
+      size: "18px",
+      height: "20px",
     },
   },
-});
+};

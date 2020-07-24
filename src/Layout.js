@@ -4,27 +4,24 @@ import Episode from "./Episode";
 import Characters from "./Characters";
 import Character from "./Character";
 import Home from "./Home";
-import { Link, Button } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { Switch, Route, Link as RouterLink } from "react-router-dom";
+import { Button, Nav } from "grommet";
+import { Switch, Route, Link } from "react-router-dom";
 
 export default function Layout() {
-  const classes = useStyles();
-
   return (
     <div className="App">
-      <nav className={classes.menu}>
-        <Link component={RouterLink} to="/">
-          <Button color="primary">Home</Button>
+      <Nav direction="row" background="brand" pad="medium">
+        <Link to="/">
+          <Button label="Home" />
         </Link>
-        <Link component={RouterLink} to="/episodes">
-          <Button color="primary">Episodes</Button>
+        <Link to="/episodes">
+          <Button label="Episodes" />
         </Link>
-        <Link component={RouterLink} to="/characters">
-          <Button color="primary">Characters</Button>
+        <Link to="/characters">
+          <Button label="Characters" />
         </Link>
-      </nav>
-      <main className={classes.main}>
+      </Nav>
+      <main>
         <Switch>
           <Route exact path="/episodes">
             <Episodes />
@@ -46,19 +43,3 @@ export default function Layout() {
     </div>
   );
 }
-
-const useStyles = makeStyles(theme => ({
-  main: {
-    margin: "0 auto",
-    padding: "16px"
-  },
-  menu: {
-    margin: "0 auto",
-    display: "flex",
-    justifyContent: "center",
-    backgroundColor: "#CCC",
-    "& button": {
-      margin: theme.spacing(1)
-    }
-  }
-}));

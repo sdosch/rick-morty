@@ -1,8 +1,9 @@
 import React from "react";
-import { Typography, Link } from "@material-ui/core";
-import { Link as RouterLink } from "react-router-dom";
+
+import { Link } from "react-router-dom";
 import { useQuery } from "react-query";
 import fetch from "./fetch";
+import { Heading, Paragraph } from "grommet";
 
 export default function Characters() {
   const { status, data } = useQuery("characters", () =>
@@ -15,19 +16,19 @@ export default function Characters() {
   console.info(data);
 
   return (
-    <div>
-      <Typography variant="h2">Characters</Typography>
-      {data.results.map(person => {
+    <>
+      <Heading level="1">Characters</Heading>
+      {data.results.map((person) => {
         return (
           <article key={person.id} style={{ margin: "16px 0 0" }}>
-            <Link component={RouterLink} to={`/characters/${person.id}`}>
-              <Typography variant="h6">
+            <Link to={`/characters/${person.id}`}>
+              <Paragraph>
                 {person.name} - {person.gender}: {person.species}
-              </Typography>
+              </Paragraph>
             </Link>
           </article>
         );
       })}
-    </div>
+    </>
   );
 }

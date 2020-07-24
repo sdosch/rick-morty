@@ -1,9 +1,9 @@
 import React from "react";
-import { Typography, Link } from "@material-ui/core";
-import { Link as RouterLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useParams } from "react-router";
 import { useQuery } from "react-query";
 import fetch from "./fetch";
+import { Heading, Paragraph } from "grommet";
 
 function Episode() {
   const { episodeId } = useParams();
@@ -16,11 +16,11 @@ function Episode() {
 
   return (
     <div>
-      <Typography variant="h2">{data.name}</Typography>
-      <Typography variant="body1">{data.air_date}</Typography>
+      <Heading level="1">{data.name}</Heading>
+      <Paragraph>{data.air_date}</Paragraph>
       <br />
-      <Typography variant="h4">Characters</Typography>
-      {data.characters.map(character => {
+      <Heading level="3">Characters</Heading>
+      {data.characters.map((character) => {
         const characterUrlParts = character.split("/").filter(Boolean);
         const characterId = characterUrlParts[characterUrlParts.length - 1];
         return <Character id={characterId} key={characterId} />;
@@ -39,8 +39,8 @@ function Character({ id }) {
 
   return (
     <article key={id}>
-      <Link component={RouterLink} to={`/characters/${id}`}>
-        <Typography variant="h6">{data.name}</Typography>
+      <Link to={`/characters/${id}`}>
+        <Paragraph>{data.name}</Paragraph>
       </Link>
     </article>
   );
