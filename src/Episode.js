@@ -3,9 +3,10 @@ import { Link } from "react-router-dom";
 import { useParams } from "react-router";
 import { useQuery } from "react-query";
 import fetch from "./fetch";
-import { Heading, Paragraph } from "grommet";
+import { Heading, Button, Paragraph, Box } from "grommet";
 
 function Episode() {
+  const customPad = { horizontal: "10px", vertical: "5px" };
   const { episodeId } = useParams();
   const { data, status } = useQuery(`episode-${episodeId}`, () =>
     fetch(`https://rickandmortyapi.com/api/episode/${episodeId}`)
@@ -15,17 +16,25 @@ function Episode() {
   if (status === "error") return <p>Error :(</p>;
 
   return (
-    <div>
+    <Box wrap>
       <Heading level="1">{data.name}</Heading>
-      <Paragraph>{data.air_date}</Paragraph>
-      <br />
+      <Box
+        background={{ color: "light-5" }}
+        round="xsmall"
+        pad={customPad}
+        alignSelf="start"
+      >
+        {data.air_date}
+      </Box>
       <Heading level="3">Characters</Heading>
-      {data.characters.map((character) => {
-        const characterUrlParts = character.split("/").filter(Boolean);
-        const characterId = characterUrlParts[characterUrlParts.length - 1];
-        return <Character id={characterId} key={characterId} />;
-      })}
-    </div>
+      <Box direction="row" wrap>
+        {data.characters.map((character) => {
+          const characterUrlParts = character.split("/").filter(Boolean);
+          const characterId = characterUrlParts[characterUrlParts.length - 1];
+          return <Character id={characterId} key={characterId} />;
+        })}
+      </Box>
+    </Box>
   );
 }
 
@@ -38,11 +47,9 @@ function Character({ id }) {
   if (status === "error") return <p>Error :(</p>;
 
   return (
-    <article key={id}>
-      <Link to={`/characters/${id}`}>
-        <Paragraph>{data.name}</Paragraph>
-      </Link>
-    </article>
+    <Link to={`/characters/${id}`}>
+      <Button key={id} label={data.name} alignSelf="start" margin="xsmall" />
+    </Link>
   );
 }
 

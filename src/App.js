@@ -12,7 +12,7 @@ export default function App() {
     <Router>
       <Grommet theme={theme}>
         <Layout />
-        <ReactQueryDevtools initialIsOpen />
+        <ReactQueryDevtools position="bottom-right" />
       </Grommet>
     </Router>
   );

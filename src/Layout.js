@@ -4,7 +4,7 @@ import Episode from "./Episode";
 import Characters from "./Characters";
 import Character from "./Character";
 import Home from "./Home";
-import { Button, Nav } from "grommet";
+import { Button, Main, Nav } from "grommet";
 import { Switch, Route, Link } from "react-router-dom";
 
 export default function Layout() {
@@ -21,7 +21,7 @@ export default function Layout() {
           <Button label="Characters" />
         </Link>
       </Nav>
-      <main>
+      <Main pad="medium">
         <Switch>
           <Route exact path="/episodes">
             <Episodes />
@@ -39,7 +39,7 @@ export default function Layout() {
             <Home />
           </Route>
         </Switch>
-      </main>
+      </Main>
     </div>
   );
 }

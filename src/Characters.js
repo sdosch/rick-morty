@@ -1,34 +1,63 @@
 import React from "react";
 
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useQuery } from "react-query";
 import fetch from "./fetch";
-import { Heading, Paragraph } from "grommet";
+import { Box, Heading, List, Stack } from "grommet";
+import { User, UserFemale, Gremlin } from "grommet-icons";
 
 export default function Characters() {
+  const history = useHistory();
   const { status, data } = useQuery("characters", () =>
     fetch("https://rickandmortyapi.com/api/character/")
   );
+  const customPad = { horizontal: "10px", vertical: "5px" };
 
   if (status === "loading") return <p>Loading...</p>;
   if (status === "error") return <p>Error :(</p>;
+
+  const renderGender = (gender) => {
+    switch (gender) {
+      case "Male":
+        return <User />;
+      case "Female":
+        return <UserFemale />;
+      case "unknown":
+        return <Gremlin />;
+      default:
+        return <User />;
+    }
+  };
 
   console.info(data);
 
   return (
     <>
       <Heading level="1">Characters</Heading>
-      {data.results.map((person) => {
-        return (
-          <article key={person.id} style={{ margin: "16px 0 0" }}>
-            <Link to={`/characters/${person.id}`}>
-              <Paragraph>
-                {person.name} - {person.gender}: {person.species}
-              </Paragraph>
-            </Link>
-          </article>
-        );
-      })}
+      <List
+        data={data.results}
+        onClickItem={(event) => history.push(`/characters/${event.item.id}`)}
+      >
+        {(result, index) => (
+          <Box direction="row" key={index} align="center" justify="start">
+            <Box background="brand" pad="xsmall" round>
+              {renderGender(result.gender)}
+            </Box>
+            <Box pad={customPad}>
+              <strong>{result.name}</strong>
+            </Box>
+
+            <Box
+              background={{ color: "light-5" }}
+              round="xsmall"
+              pad={customPad}
+              margin={{ horizontal: "10px" }}
+            >
+              {result.species}
+            </Box>
+          </Box>
+        )}
+      </List>
     </>
   );
 }
