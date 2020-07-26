@@ -19,15 +19,11 @@ export default function Episodes() {
   return (
     <>
       <Heading level="1">Episodes</Heading>
-      {data.results.map((episode) => (
-        <article key={episode.id}>
-          <Link to={`/episodes/${episode.id}`}>
-            <Paragraph>
-              {episode.episode} - {episode.name} <em>{episode.airDate}</em>
-            </Paragraph>
-          </Link>
-        </article>
-      ))}
+      <Box>
+        <List data={data.results} pad="medium">
+          {(result, index) => result.name}
+        </List>
+      </Box>
     </>
   );
 }
