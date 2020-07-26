@@ -1,10 +1,10 @@
 import React from "react";
-
 import { useHistory } from "react-router-dom";
 import { useQuery } from "react-query";
 import fetch from "./fetch";
-import { Box, Heading, List, Stack } from "grommet";
+import { Box, Heading, List } from "grommet";
 import { User, UserFemale, Gremlin } from "grommet-icons";
+import { PulseLoader } from "react-spinners";
 
 export default function Characters() {
   const history = useHistory();
@@ -13,7 +13,7 @@ export default function Characters() {
   );
   const customPad = { horizontal: "10px", vertical: "5px" };
 
-  if (status === "loading") return <p>Loading...</p>;
+  if (status === "loading") return <PulseLoader size={10} color={"#dadada"} />;
   if (status === "error") return <p>Error :(</p>;
 
   const renderGender = (gender) => {

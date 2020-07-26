@@ -1,5 +1,4 @@
 import React from "react";
-
 import { Link } from "react-router-dom";
 import { Box, Heading, Paragraph } from "grommet";
 
@@ -44,6 +43,11 @@ export default function Home() {
             </li>
             <li>
               <a href="https://rickandmortyapi.com/">The Rick and Morty API</a>
+            </li>
+            <li>
+              <a href="https://www.npmjs.com/package/react-spinners">
+                React Spinners
+              </a>
             </li>
           </ul>
         </Paragraph>

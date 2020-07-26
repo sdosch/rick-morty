@@ -12,6 +12,7 @@ import {
   TableHeader,
   TableBody,
 } from "grommet";
+import { PulseLoader } from "react-spinners";
 
 function Character() {
   const history = useHistory();
@@ -21,7 +22,7 @@ function Character() {
     fetch(`https://rickandmortyapi.com/api/character/${characterId}`)
   );
 
-  if (status === "loading") return <p>Loading...</p>;
+  if (status === "loading") return <PulseLoader size={10} color={"#dadada"} />;
   if (status === "error") return <p>Error :(</p>;
 
   const locationUrlPars = data.location.url.split("/").filter(Boolean);
@@ -100,7 +101,7 @@ function Episode({ id }) {
     fetch(`https://rickandmortyapi.com/api/episode/${id}`)
   );
 
-  if (status === "loading") return <p>Loading...</p>;
+  if (status === "loading") return <PulseLoader size={10} color={"#dadada"} />;
   if (status === "error") return <p>Error :(</p>;
 
   return (
@@ -133,7 +134,7 @@ function Location({ id }) {
     fetch(`https://rickandmortyapi.com/api/location/${id}`)
   );
 
-  if (status === "loading") return <p>Loading...</p>;
+  if (status === "loading") return <PulseLoader size={10} color={"#dadada"} />;
   if (status === "error") return <p>Error :(</p>;
 
   return (

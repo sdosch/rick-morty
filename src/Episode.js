@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import { useParams } from "react-router";
 import { useQuery } from "react-query";
 import fetch from "./fetch";
-import { Heading, Button, Paragraph, Box } from "grommet";
+import { Heading, Button, Box } from "grommet";
+import { PulseLoader } from "react-spinners";
 
 function Episode() {
   const customPad = { horizontal: "10px", vertical: "5px" };
@@ -12,7 +13,7 @@ function Episode() {
     fetch(`https://rickandmortyapi.com/api/episode/${episodeId}`)
   );
 
-  if (status === "loading") return <p>Loading...</p>;
+  if (status === "loading") return <PulseLoader size={10} color={"#dadada"} />;
   if (status === "error") return <p>Error :(</p>;
 
   return (
@@ -43,7 +44,10 @@ function Character({ id }) {
     fetch(`https://rickandmortyapi.com/api/character/${id}`)
   );
 
-  if (status === "loading") return <p>Loading...</p>;
+  if (status === "loading")
+    return (
+      <PulseLoader size={10} color={"#dadada"} css={{ margin: "0 40px" }} />
+    );
   if (status === "error") return <p>Error :(</p>;
 
   return (

@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Heading, List } from "grommet";
 import { useHistory } from "react-router-dom";
 import { useQuery } from "react-query";
+import { PulseLoader } from "react-spinners";
 import fetch from "./fetch";
 
 export default function Episodes() {
@@ -12,7 +13,7 @@ export default function Episodes() {
   const customPad = { horizontal: "10px", vertical: "5px" };
 
   if (status === "loading") {
-    return <p>Loading...</p>;
+    return <PulseLoader size={10} color={"#dadada"} />;
   }
   if (status === "error") {
     return <p>Error :(</p>;
