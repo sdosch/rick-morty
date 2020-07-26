@@ -1,14 +1,14 @@
 import React from "react";
 
 import { Link } from "react-router-dom";
-import { Heading, Paragraph } from "grommet";
+import { Box, Heading, Paragraph } from "grommet";
 
 export default function Home() {
   return (
-    <div>
+    <Box>
       <Heading level="1">React Query Demo</Heading>
       <Heading level="2">Using the Rick And Morty API</Heading>
-      <section>
+      <Box>
         <Heading level="3">Why React Query?</Heading>
         <Paragraph>
           In this demo you will be able to see how React Query is a significant
@@ -28,7 +28,26 @@ export default function Home() {
           Check out the <Link to="/episodes">Episodes</Link> and{" "}
           <Link to="/characters">Characters</Link>!
         </Paragraph>
-      </section>
-    </div>
+        <Paragraph>
+          <ul>
+            <li>
+              <a href="https://v2.grommet.io/">Grommet</a>
+            </li>
+            <li>
+              <a href="https://icons.grommet.io/">Grommet Icons</a>
+            </li>
+            <li>
+              <a href="https://storybook.grommet.io/">Grommet Storybook</a>
+            </li>
+            <li>
+              <a href="https://react-query.tanstack.com/">React Query</a>
+            </li>
+            <li>
+              <a href="https://rickandmortyapi.com/">The Rick and Morty API</a>
+            </li>
+          </ul>
+        </Paragraph>
+      </Box>
+    </Box>
   );
 }

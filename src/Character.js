@@ -100,9 +100,8 @@ function Episode({ id }) {
     fetch(`https://rickandmortyapi.com/api/episode/${id}`)
   );
 
-  if (status !== "success") {
-    return null;
-  }
+  if (status === "loading") return <p>Loading...</p>;
+  if (status === "error") return <p>Error :(</p>;
 
   return (
     <Box direction="row" key={id} align="center" justify="start">
