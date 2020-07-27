@@ -3,14 +3,16 @@ import { useHistory } from "react-router-dom";
 import { useInfiniteQuery } from "react-query";
 import fetch from "./fetch";
 import { Box, Heading, InfiniteScroll } from "grommet";
-import { User, UserFemale, Gremlin } from "grommet-icons";
+import { User, UserFemale, Test, Gremlin } from "grommet-icons";
 import { PulseLoader } from "react-spinners";
 
 export default function Characters() {
   const customPad = { horizontal: "10px", vertical: "5px" };
   const history = useHistory();
-  const fetchCharacters = (key, cursor) =>
-    fetch(cursor ? cursor : "https://rickandmortyapi.com/api/character");
+  const fetchCharacters = (
+    key,
+    group = "https://rickandmortyapi.com/api/character/?page=1"
+  ) => fetch(group);
 
   const {
     status,
@@ -24,16 +26,29 @@ export default function Characters() {
   });
 
   const renderGender = (gender) => {
+    let icon, color;
     switch (gender) {
       case "Male":
-        return <User />;
+        icon = <User />;
+        color = "accent-1";
+        break;
       case "Female":
-        return <UserFemale />;
+        icon = <UserFemale />;
+        color = "accent-2";
+        break;
       case "unknown":
-        return <Gremlin />;
+        icon = <Test />;
+        color = "accent-3";
+        break;
       default:
-        return <User />;
+        icon = <Gremlin />;
+        color = "accent-4";
     }
+    return (
+      <Box background={color} pad="xsmall" round>
+        {icon}
+      </Box>
+    );
   };
 
   return status === "loading" ? (
@@ -47,7 +62,7 @@ export default function Characters() {
         <InfiniteScroll
           items={group.results}
           onMore={!canFetchMore || isFetchingMore ? null : fetchMore}
-          step="20"
+          step={20}
         >
           {(result, index) => (
             <Box
@@ -62,9 +77,7 @@ export default function Characters() {
                 history.push(`/characters/${result.id}`);
               }}
             >
-              <Box background="brand" pad="xsmall" round>
-                {renderGender(result.gender)}
-              </Box>
+              {renderGender(result.gender)}
               <Box pad={customPad}>
                 <strong>{result.name}</strong>
               </Box>
@@ -75,7 +88,7 @@ export default function Characters() {
                 pad={customPad}
                 margin={{ horizontal: "10px" }}
               >
-                {result.species}
+                {`${result.gender} ${result.species}`}
               </Box>
             </Box>
           )}

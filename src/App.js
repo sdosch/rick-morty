@@ -2,11 +2,15 @@ import React, { useState } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Grommet } from "grommet";
 import { ReactQueryDevtools } from "react-query-devtools";
+import styled from "styled-components";
 
 import "./styles.css";
 import Layout from "./Layout";
 
 export default function App() {
+  const FillGrommet = styled(Grommet)`
+    min-height: 100vh;
+  `;
   const [themeMode, setThemeMode] = useState("light");
   const onChange = (checked) => {
     setThemeMode(checked ? "light" : "dark");
@@ -14,10 +18,10 @@ export default function App() {
 
   return (
     <Router>
-      <Grommet theme={theme} themeMode={themeMode}>
+      <FillGrommet theme={theme} themeMode={themeMode}>
         <Layout onChange={onChange} />
         <ReactQueryDevtools position="bottom-right" />
-      </Grommet>
+      </FillGrommet>
     </Router>
   );
 }
@@ -26,7 +30,7 @@ const theme = {
   global: {
     colors: {
       brand: {
-        dark: "#444",
+        dark: "#2f65b5",
         light: "#228BE6",
       },
       background: {
