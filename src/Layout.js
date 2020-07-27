@@ -1,25 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import Episodes from "./Episodes";
 import Episode from "./Episode";
 import Characters from "./Characters";
 import Character from "./Character";
 import Home from "./Home";
-import { Button, Main, Nav } from "grommet";
+import { Box, Button, CheckBox, Main, Nav } from "grommet";
 import { Switch, Route, Link } from "react-router-dom";
 
-export default function Layout() {
+export default function Layout({ onChange }) {
+  const [checked, setChecked] = useState(false);
+  const changeThemeMode = () => {
+    onChange(checked);
+    setChecked(!checked);
+  };
   return (
     <div className="App">
       <Nav direction="row" background="brand" pad="medium">
         <Link to="/">
-          <Button label="Home" />
+          <Button plain color="white" label="Home" />
         </Link>
         <Link to="/episodes">
-          <Button label="Episodes" />
+          <Button plain color="white" label="Episodes" />
         </Link>
         <Link to="/characters">
-          <Button label="Characters" />
+          <Button plain color="white" label="Characters" />
         </Link>
+        <Box style={{ marginLeft: "auto" }}>
+          <CheckBox
+            label="Dark Mode"
+            toggle
+            checked={checked}
+            onChange={changeThemeMode}
+          />
+        </Box>
       </Nav>
       <Main pad="medium">
         <Switch>

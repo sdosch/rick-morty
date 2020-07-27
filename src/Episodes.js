@@ -1,55 +1,79 @@
 import React from "react";
-import { Box, Heading, List } from "grommet";
+import { Box, Heading, InfiniteScroll } from "grommet";
 import { useHistory } from "react-router-dom";
-import { useQuery } from "react-query";
+import { useInfiniteQuery } from "react-query";
 import { PulseLoader } from "react-spinners";
 import fetch from "./fetch";
 
 export default function Episodes() {
-  const history = useHistory();
-  const { data, status } = useQuery("episodes", () =>
-    fetch("https://rickandmortyapi.com/api/episode")
-  );
   const customPad = { horizontal: "10px", vertical: "5px" };
+  const history = useHistory();
+  const fetchEpisodes = (key, cursor) =>
+    fetch(cursor ? cursor : "https://rickandmortyapi.com/api/episode");
 
-  if (status === "loading") {
-    return <PulseLoader size={10} color={"#dadada"} />;
-  }
-  if (status === "error") {
-    return <p>Error :(</p>;
-  }
+  const {
+    status,
+    data,
+    isFetching,
+    isFetchingMore,
+    fetchMore,
+    canFetchMore,
+  } = useInfiniteQuery("episodes", fetchEpisodes, {
+    getFetchMore: (lastGroup, allGroups) => lastGroup.info.next,
+  });
 
-  return (
+  return status === "loading" ? (
+    <PulseLoader size={10} color={"#dadada"} />
+  ) : status === "error" ? (
+    <p>Error :(</p>
+  ) : (
     <>
       <Heading level="1">Episodes</Heading>
-      <List
-        data={data.results}
-        onClickItem={(event) => history.push(`/episodes/${event.item.id}`)}
-      >
-        {(result, index) => (
-          <Box direction="row" key={index} align="center" justify="start">
+      {data.map((group, i) => (
+        <InfiniteScroll
+          items={group.results}
+          onMore={!canFetchMore || isFetchingMore ? null : fetchMore}
+          step="20"
+        >
+          {(result, index) => (
             <Box
-              background={{ color: "brand" }}
-              round="xsmall"
-              pad={customPad}
-              margin={{ horizontal: "10px" }}
+              hoverIndicator
+              direction="row"
+              key={index}
+              align="center"
+              justify="start"
+              pad="small"
+              border={{ side: "bottom" }}
+              onClick={() => {
+                history.push(`/episodes/${result.id}`);
+              }}
             >
-              {result.episode}
+              <Box
+                background={{ color: "brand" }}
+                round="xsmall"
+                pad={customPad}
+                margin={{ horizontal: "10px" }}
+              >
+                {result.episode}
+              </Box>
+              <Box pad={customPad}>
+                <strong>{result.name}</strong>
+              </Box>
+              <Box
+                background={{ color: "light-5" }}
+                round="xsmall"
+                pad={customPad}
+                margin={{ horizontal: "10px" }}
+              >
+                {result.air_date}
+              </Box>
             </Box>
-            <Box pad={customPad}>
-              <strong>{result.name}</strong>
-            </Box>
-            <Box
-              background={{ color: "light-5" }}
-              round="xsmall"
-              pad={customPad}
-              margin={{ horizontal: "10px" }}
-            >
-              {result.air_date}
-            </Box>
-          </Box>
-        )}
-      </List>
+          )}
+        </InfiniteScroll>
+      ))}
+      {isFetching ? (
+        <PulseLoader size={10} color={"#dadada"} css={{ margin: 20 }} />
+      ) : null}
     </>
   );
 }

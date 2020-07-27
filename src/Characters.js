@@ -1,20 +1,27 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { useQuery } from "react-query";
+import { useInfiniteQuery } from "react-query";
 import fetch from "./fetch";
-import { Box, Heading, List } from "grommet";
+import { Box, Heading, InfiniteScroll } from "grommet";
 import { User, UserFemale, Gremlin } from "grommet-icons";
 import { PulseLoader } from "react-spinners";
 
 export default function Characters() {
-  const history = useHistory();
-  const { status, data } = useQuery("characters", () =>
-    fetch("https://rickandmortyapi.com/api/character/")
-  );
   const customPad = { horizontal: "10px", vertical: "5px" };
+  const history = useHistory();
+  const fetchCharacters = (key, cursor) =>
+    fetch(cursor ? cursor : "https://rickandmortyapi.com/api/character");
 
-  if (status === "loading") return <PulseLoader size={10} color={"#dadada"} />;
-  if (status === "error") return <p>Error :(</p>;
+  const {
+    status,
+    data,
+    isFetching,
+    isFetchingMore,
+    fetchMore,
+    canFetchMore,
+  } = useInfiniteQuery("characters", fetchCharacters, {
+    getFetchMore: (lastGroup, allGroups) => lastGroup.info.next,
+  });
 
   const renderGender = (gender) => {
     switch (gender) {
@@ -29,35 +36,54 @@ export default function Characters() {
     }
   };
 
-  console.info(data);
-
-  return (
+  return status === "loading" ? (
+    <PulseLoader size={10} color={"#dadada"} />
+  ) : status === "error" ? (
+    <p>Error :(</p>
+  ) : (
     <>
       <Heading level="1">Characters</Heading>
-      <List
-        data={data.results}
-        onClickItem={(event) => history.push(`/characters/${event.item.id}`)}
-      >
-        {(result, index) => (
-          <Box direction="row" key={index} align="center" justify="start">
-            <Box background="brand" pad="xsmall" round>
-              {renderGender(result.gender)}
-            </Box>
-            <Box pad={customPad}>
-              <strong>{result.name}</strong>
-            </Box>
-
+      {data.map((group, i) => (
+        <InfiniteScroll
+          items={group.results}
+          onMore={!canFetchMore || isFetchingMore ? null : fetchMore}
+          step="20"
+        >
+          {(result, index) => (
             <Box
-              background={{ color: "light-5" }}
-              round="xsmall"
-              pad={customPad}
-              margin={{ horizontal: "10px" }}
+              hoverIndicator
+              direction="row"
+              key={index}
+              align="center"
+              justify="start"
+              pad="small"
+              border={{ side: "bottom" }}
+              onClick={() => {
+                history.push(`/characters/${result.id}`);
+              }}
             >
-              {result.species}
+              <Box background="brand" pad="xsmall" round>
+                {renderGender(result.gender)}
+              </Box>
+              <Box pad={customPad}>
+                <strong>{result.name}</strong>
+              </Box>
+
+              <Box
+                background={{ color: "light-5" }}
+                round="xsmall"
+                pad={customPad}
+                margin={{ horizontal: "10px" }}
+              >
+                {result.species}
+              </Box>
             </Box>
-          </Box>
-        )}
-      </List>
+          )}
+        </InfiniteScroll>
+      ))}
+      {isFetching ? (
+        <PulseLoader size={10} color={"#dadada"} css={{ margin: 20 }} />
+      ) : null}
     </>
   );
 }
