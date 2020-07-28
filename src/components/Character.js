@@ -1,7 +1,8 @@
 import React from "react";
 import { useParams, useHistory } from "react-router";
 import { useQuery } from "react-query";
-import fetch from "./fetch";
+
+import fetch from "../api/fetch";
 import {
   Box,
   Heading,

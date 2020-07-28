@@ -3,7 +3,8 @@ import { Box, Heading, InfiniteScroll } from "grommet";
 import { useHistory } from "react-router-dom";
 import { useInfiniteQuery } from "react-query";
 import { PulseLoader } from "react-spinners";
-import fetch from "./fetch";
+
+import fetch from "../api/fetch";
 
 export default function Episodes() {
   const customPad = { horizontal: "10px", vertical: "5px" };

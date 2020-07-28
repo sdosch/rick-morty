@@ -2,9 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router";
 import { useQuery } from "react-query";
-import fetch from "./fetch";
 import { Heading, Button, Box } from "grommet";
 import { PulseLoader } from "react-spinners";
+
+import fetch from "../api/fetch";
 
 function Episode() {
   const customPad = { horizontal: "10px", vertical: "5px" };

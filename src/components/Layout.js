@@ -1,11 +1,12 @@
 import React, { useState } from "react";
+import { Box, Button, CheckBox, Main, Nav } from "grommet";
+import { Switch, Route, Link } from "react-router-dom";
+
 import Episodes from "./Episodes";
 import Episode from "./Episode";
 import Characters from "./Characters";
 import Character from "./Character";
 import Home from "./Home";
-import { Box, Button, CheckBox, Main, Nav } from "grommet";
-import { Switch, Route, Link } from "react-router-dom";
 
 export default function Layout({ onChange }) {
   const [checked, setChecked] = useState(false);
